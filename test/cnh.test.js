@@ -5,5 +5,5 @@ test("Validando CNH com idade 18 anos", async () => {
 });
 
 test("Validando CNH com idade 15 anos", async () => {
-  expect(obterCnh(15)).toBeFalsy();
+  expect(obterCnh(14)).toBeFalsy();
 });
