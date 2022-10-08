@@ -1,33 +1,19 @@
-name: Build and Tests
-
+name: Build
 on:
   push:
-    branches: [ master ]
+    branches:
+      - main
   pull_request:
-    branches: [ master ]
-  schedule:   
-    - cron: '0 12 * * *'
-
+    types: [opened, synchronize, reopened]
 jobs:
-  build:
-    name: Run Unit Tests
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js 12
-      uses: actions/setup-node@v2
-      with:
-        node-version: 12
-        cache: 'npm'
-    - run: npm install      
-    - run: npm run coverage
-
   sonarcloud:
-    name: Run SonarCloud
+    name: SonarCloud
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
